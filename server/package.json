@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "post server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "start-ts": "ts-node src/index.ts",
+    "watch" : "tsc -w"
+  },
+  "author": "dan deng",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.7.4",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  }
+}
