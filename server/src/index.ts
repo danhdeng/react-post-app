@@ -8,15 +8,15 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
-import { HelloResolver } from "./resolvers/HelloResolver";
-import { PostResolver } from "./resolvers/PostResolver";
-import { UserResolver } from "./resolvers/UserResolver";
+import { HelloResolver } from "./resolvers/helloResolver";
+import { PostResolver } from "./resolvers/postResolver";
+import { UserResolver } from "./resolvers/userResolver";
 
 const main = async () => {
   console.log(process.env.DB_USERNAME_DEV);
   await createConnection({
     type: "postgres",
-    host: "localhost",
+    host: process.env.HOST,
     port: 5432,
     database: "reddit",
     username: process.env.DB_USERNAME_DEV,
