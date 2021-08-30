@@ -17,26 +17,29 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({unique: true})
-    username!: string
+	@Field()
+	@Column({ unique: true })
+	username!: string
 
-    @Column({unique: true})
-    email!: string
+	@Field()
+	@Column({ unique: true })
+	email!: string
 
+    @Field()
     @Column()
     password!: string
 
-    @OneToMany(_to=>Post, post=>post.user)
-    posts: Post[]
+	@OneToMany(() => Post, post => post.user)
+	posts: Post[]
 
     @OneToMany(_to=>Upvote, upvote=>upvote.user)
     upvotes: Upvote[]
 
+	@Field()
+	@CreateDateColumn()
+	createdAt: Date
 
-    @CreateDateColumn()
-    createAt: Date
-
-    @UpdateDateColumn()
-    updateAt: Date
-
+	@Field()
+	@UpdateDateColumn()
+	updatedAt: Date
 }

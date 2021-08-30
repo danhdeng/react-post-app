@@ -1,4 +1,4 @@
-import { RegisterInput } from "src/type/RegisterInput";
+import { RegisterInput } from "../types/RegisterInput";
 
 export const validateRegisterInput=(registerInput: RegisterInput)=>{
     if(!registerInput.email.includes('@')){

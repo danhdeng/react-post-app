@@ -1,6 +1,6 @@
 import { Field, ObjectType } from 'type-graphql'
 
-ObjectType()
+@ObjectType()
 export class FieldError{
     @Field()
     field: string

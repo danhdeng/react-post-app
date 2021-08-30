@@ -1,6 +1,6 @@
-import { Post } from "src/entities/Post";
-import { User } from "src/entities/User";
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Post } from "./Post";
+import { User } from "./User";
 
 @Entity()
 export class Upvote extends BaseEntity {
@@ -8,7 +8,7 @@ export class Upvote extends BaseEntity {
     userId!: number
 
     @ManyToOne(_to=>User, user=>user.upvotes)
-    user?:User
+    user!:User
 
     @PrimaryColumn()
     postId!:number

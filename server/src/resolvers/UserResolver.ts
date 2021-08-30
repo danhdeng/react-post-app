@@ -1,17 +1,17 @@
 import argon2 from 'argon2';
-import { COOKIE_NAME } from 'src/constants';
-import { User } from 'src/entities/User';
-import { TokenModel } from 'src/models/Token';
-import { ChangePasswordInput } from 'src/type/ChangePasswordInput';
-import { LoginInput } from 'src/type/CreatePostInput';
-import { ForgotPasswordInput } from 'src/type/ForgotPassword';
-import { RegisterInput } from 'src/type/RegisterInput';
-import { sendEmail } from 'src/utils/sendEmail';
-import { validateRegisterInput } from 'src/utils/validateRegisterInput';
 import { Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
-import { Context } from '../type/Context';
-import { UserMutationResponse } from './../type/UserMutationResponse';
+import { COOKIE_NAME } from '../constants';
+import { User } from '../entities/User';
+import { TokenModel } from '../models/Token';
+import { ChangePasswordInput } from '../types/ChangePasswordInput';
+import { Context } from '../types/Context';
+import { LoginInput } from '../types/CreatePostInput';
+import { ForgotPasswordInput } from '../types/ForgotPassword';
+import { RegisterInput } from '../types/RegisterInput';
+import { UserMutationResponse } from '../types/UserMutationResponse';
+import { sendEmail } from '../utils/sendEmail';
+import { validateRegisterInput } from '../utils/validateRegisterInput';
 
 @Resolver(_of=>User)
 export class UserResolver {
@@ -28,32 +28,34 @@ export class UserResolver {
     return user
   }
 
-  @Mutation( _return =>UserMutationResponse)
-  async register(
-    @Arg('registerInput') registerInput: RegisterInput,
-    @Ctx() {req}: Context
-  ): Promise<UserMutationResponse>{
-    const valiateRegisterInputErrors=validateRegisterInput(registerInput)
-    if(valiateRegisterInputErrors !==null){
-      return {
-        code: 400,
-        success: false,
-        ...valiateRegisterInputErrors
-      }
-    }
-    try{
-      const {username, email, password} =registerInput
-      const existingUser = await User.findOne({email})
-      if(existingUser)
-        return {
-          code: 400,
-          success: false,
-          message:'Duplicate username or email',
-          error:[
-            {field: existingUser.username===username ? 'username' :'email',
-            message: `${existingUser.username===username ? 'username' :'email'}already taken`,
-          }]
-        }
+	@Mutation(_return => UserMutationResponse)
+	async register(
+		@Arg('registerInput') registerInput: RegisterInput,
+		@Ctx() { req }: Context
+	): Promise<UserMutationResponse> {
+		const validateRegisterInputErrors = validateRegisterInput(registerInput)
+		if (validateRegisterInputErrors !== null)
+			return { code: 400, success: false, ...validateRegisterInputErrors }
+
+		try {
+			const { username, email, password } = registerInput
+			const existingUser = await User.findOne({
+				where: [{ username }, { email }]
+			})
+			if (existingUser)
+				return {
+					code: 400,
+					success: false,
+					message: 'Duplicated username or email',
+					errors: [
+						{
+							field: existingUser.username === username ? 'username' : 'email',
+							message: `${
+								existingUser.username === username ? 'Username' : 'Email'
+							} already taken`
+						}
+					]
+				}
 
       const hashedPassword=await argon2.hash(password)
 
@@ -64,6 +66,8 @@ export class UserResolver {
       })
 
       await newUser.save()
+
+      req.session.userId=newUser.id
 
       return {
         code:200,
@@ -77,7 +81,7 @@ export class UserResolver {
       return {
         code:500,
         success: false,
-        message:`Internal server errror ${error.message}`
+        message:`Internal server error ${error.message}`
       }
     }
   }
@@ -98,7 +102,7 @@ export class UserResolver {
               code: 400,
             success: false,
             message:'User not found',
-            error:[
+            errors:[
               {field: 'usernameOrEmail',
               message: 'Username or email incorrect',
             }]
@@ -110,7 +114,7 @@ export class UserResolver {
               code: 400,
             success: false,
             message:'Wrong password',
-            error:[
+            errors:[
               {field: 'password',
               message: 'Wrong password'
             }]
@@ -183,7 +187,7 @@ export class UserResolver {
             code: 400,
             success: false,
             message:'Invalid password',
-            error:[
+            errors:[
               {field: 'newPassword',
               message: 'Password lenght must be greater than 2'
             }]
@@ -196,7 +200,7 @@ export class UserResolver {
                 code: 400,
                 success: false,
                 message:'Invalid or expired password reset token',
-                error:[
+                errors:[
                   {field: 'token',
                   message: 'Invalid or expired password reset token'
                 }]
@@ -208,7 +212,7 @@ export class UserResolver {
               code: 400,
               success: false,
               message:'Invalid or expired password reset token',
-              error:[
+              errors:[
                 {field: 'token',
                 message: 'Invalid or expired password reset token'
               }]
@@ -222,7 +226,7 @@ export class UserResolver {
               code: 400,
               success: false,
               message:'User no longer exists',
-              error:[
+              errors:[
                 {field: 'token',
                 message: 'User no longer exists'
               }]
