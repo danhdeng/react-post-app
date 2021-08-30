@@ -13,7 +13,7 @@ import { User } from "./User";
 @ObjectType()
 @Entity()
 export class Post extends BaseEntity {
-    @Field(_type=>ID)
+    @Field(_type => ID)
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -29,16 +29,16 @@ export class Post extends BaseEntity {
     @Column()
     userId!: number
 
-    @Field(_type =>User)
-    @ManyToOne(()=>User, user => user.posts)
+    @Field(_type => User)
+    @ManyToOne(() => User, user => user.posts)
     user: User
 
-    
-    @OneToMany(_to=>Upvote, upvote=>upvote.post)
-    upvotes:Upvote[]
+
+    @OneToMany(_to => Upvote, upvote => upvote.post)
+    upvotes: Upvote[]
 
     @Field()
-    @Column({default:0})
+    @Column({ default: 0 })
     points!: number
 
 
@@ -46,11 +46,11 @@ export class Post extends BaseEntity {
     voteType: number
 
     @Field()
-    @CreateDateColumn({type: 'timestamptz'})
-    createAt: Date
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date
 
     @Field()
-    @UpdateDateColumn({type: 'timestamptz'})
-    updateAt: Date
+    @UpdateDateColumn({ type: 'timestamptz' })
+    updatedAt: Date
 
 }

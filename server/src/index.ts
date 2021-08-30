@@ -1,3 +1,4 @@
+import { buildDataLoaders } from './utils/dataLoaders';
 require("dotenv").config();
 // import Mongoose  from "mongoose";
 import { ApolloServerPluginLandingPageGraphQLPlayground, Context } from "apollo-server-core";
@@ -18,8 +19,7 @@ import { PostResolver } from "./resolvers/postResolver";
 import { UserResolver } from "./resolvers/userResolver";
 
 const main = async () => {
-  console.log(process.env.DB_USERNAME_DEV);
-  await createConnection({
+  const connection = await createConnection({
     type: "postgres",
     host: 'localhost',
     port: 5432,
@@ -36,26 +36,26 @@ const main = async () => {
   // Session/Cookie store
   const mongoUrl = `mongodb+srv://${process.env.SESSION_DB_USERNAME_DEV_PROD}:${process.env.SESSION_DB_PASSWORD_DEV_PROD}@${process.env.MONGODB_HTTP_ADDRESS}`;
   mongoose.connect(mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      // server: {
-      //     poolSize: Number(process.env.POOL_SIZE!)
-      // }
-    })
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    // server: {
+    //     poolSize: Number(process.env.POOL_SIZE!)
+    // }
+  })
     .then(() => {
       console.log(
-          'Connected to Distribution API Database - Initial Connection'
+        'Connected to Distribution API Database - Initial Connection'
       );
     })
     .catch((err) => {
       console.log(
-          `Initial Distribution API Database connection error occured -`,
-          err
+        `Initial Distribution API Database connection error occured -`,
+        err
       );
-  });
-  app.set('trust proxy',1)
+    });
+  app.set('trust proxy', 1)
 
   app.use(
     session({
@@ -78,8 +78,13 @@ const main = async () => {
       resolvers: [UserResolver, PostResolver, HelloResolver],
       validate: false,
     }),
-    context: ({ req, res }): Context => ({ req, res }),
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
+    context: ({ req, res }): Context => ({
+      req,
+      res,
+      connection,
+      dataloaders: buildDataLoaders()
+    }),
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
 
   await apolloServer.start();

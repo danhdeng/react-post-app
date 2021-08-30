@@ -1,4 +1,4 @@
-export enum VoteTYPE {
-    Upvote =1,
-    Downvote =-1
+export enum VoteType {
+    Upvote = 1,
+    Downvote = -1
 }
