@@ -1,5 +1,3 @@
-import { buildDataLoaders } from './utils/dataLoaders';
-require("dotenv").config();
 // import Mongoose  from "mongoose";
 import { ApolloServerPluginLandingPageGraphQLPlayground, Context } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
@@ -17,6 +15,8 @@ import { User } from "./entities/User";
 import { HelloResolver } from "./resolvers/helloResolver";
 import { PostResolver } from "./resolvers/postResolver";
 import { UserResolver } from "./resolvers/userResolver";
+import { buildDataLoaders } from './utils/dataLoaders';
+require("dotenv").config();
 
 const main = async () => {
   const connection = await createConnection({
@@ -56,16 +56,17 @@ const main = async () => {
       );
     });
   app.set('trust proxy', 1)
-
+  console.log("production",__prod__)
   app.use(
     session({
       name: COOKIE_NAME,
       store: MongoStore.create({ mongoUrl }),
       cookie: {
+        domain:'localhost',
         maxAge: 1000 * 60 * 60,
         httpOnly: true,
-        secure: __prod__,
-        sameSite: "lax",
+        secure: false,
+        sameSite:"lax"
       },
       secret: process.env.SESSION_SECRET_DEV_PROD as string,
       saveUninitialized: false,
@@ -91,9 +92,11 @@ const main = async () => {
 
   apolloServer.applyMiddleware({ app, cors: false });
 
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => {
-    console.log(`server is started on port : ${port}`);
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(
+    `Server started on port ${PORT}. GraphQL server started on localhost:${PORT}${apolloServer.graphqlPath}`
+    )
   });
 };
 

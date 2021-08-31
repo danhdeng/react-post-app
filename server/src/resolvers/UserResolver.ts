@@ -1,5 +1,4 @@
 import argon2 from 'argon2';
-import { LoginInput } from '../types/LoginInput';
 import { Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
 import { v4 as uuidv4 } from 'uuid';
 import { COOKIE_NAME } from '../constants';
@@ -8,6 +7,7 @@ import { TokenModel } from '../models/Token';
 import { ChangePasswordInput } from '../types/ChangePasswordInput';
 import { Context } from '../types/Context';
 import { ForgotPasswordInput } from '../types/ForgotPassword';
+import { LoginInput } from '../types/LoginInput';
 import { RegisterInput } from '../types/RegisterInput';
 import { UserMutationResponse } from '../types/UserMutationResponse';
 import { sendEmail } from '../utils/sendEmail';
