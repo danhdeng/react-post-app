@@ -1,16 +1,16 @@
-import { Upvote } from './../entities/Upvote';
-import { UpdatePostInput } from './../types/UpdatePostInput';
-import { PaginatedPosts } from './../types/PaginatedPosts';
-import { PostMutationResponse } from '../types/PostMutationResponse';
-import { Context } from '../types/Context';
-import { User } from '../entities/User';
-import { Post } from '../entities/Post';
-import { CreatePostInput } from '../types/CreatePostInput'
-import { Arg, Ctx, FieldResolver, ID, Int, Mutation, Query, registerEnumType, Resolver, Root, UseMiddleware } from "type-graphql";
-import { checkAuth } from '../middleware/checkAuth';
-import { LessThan } from 'typeorm';
 import { UserInputError } from 'apollo-server-core';
+import { Arg, Ctx, FieldResolver, ID, Int, Mutation, Query, registerEnumType, Resolver, Root, UseMiddleware } from "type-graphql";
+import { LessThan } from 'typeorm';
+import { Post } from '../entities/Post';
+import { User } from '../entities/User';
+import { checkAuth } from '../middleware/checkAuth';
+import { Context } from '../types/Context';
+import { CreatePostInput } from '../types/CreatePostInput';
+import { PostMutationResponse } from '../types/PostMutationResponse';
 import { VoteType } from '../types/VoteType';
+import { Upvote } from './../entities/Upvote';
+import { PaginatedPosts } from './../types/PaginatedPosts';
+import { UpdatePostInput } from './../types/UpdatePostInput';
 
 registerEnumType(VoteType, {
   name: 'VoteType'
