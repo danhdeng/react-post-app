@@ -178,7 +178,7 @@ export class UserResolver {
 
   @Mutation(_return => UserMutationResponse)
   async changePassword(
-    @Arg('toekn') token: string,
+    @Arg('token') token: string,
     @Arg('userId') userId: string,
     @Arg('changePasswordInput') changePasswordInput: ChangePasswordInput,
     @Ctx() { req }: Context
