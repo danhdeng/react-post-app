@@ -1,7 +1,8 @@
-import Register from "./register"
-
+import { Layout } from "../components/Layout"
 const Index = () => (
-  <Register />
+  <Layout>
+    Hello World Index page
+  </Layout>
 )
 
 export default Index

@@ -2,6 +2,7 @@
 import { ApolloServerPluginLandingPageGraphQLPlayground, Context } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 import express from "express";
 import session from "express-session";
 import mongoose from "mongoose";
@@ -33,6 +34,15 @@ const main = async () => {
 
   const app = express();
 
+  app.use(
+    cors({
+      origin: __prod__
+        ? process.env.CORS_ORIGIN_PROD
+        : process.env.CORS_ORIGIN_DEV,
+      credentials: true
+    })
+  )
+
   // Session/Cookie store
   const mongoUrl = `mongodb+srv://${process.env.SESSION_DB_USERNAME_DEV_PROD}:${process.env.SESSION_DB_PASSWORD_DEV_PROD}@${process.env.MONGODB_HTTP_ADDRESS}`;
   mongoose.connect(mongoUrl, {
@@ -56,17 +66,17 @@ const main = async () => {
       );
     });
   app.set('trust proxy', 1)
-  console.log("production",__prod__)
+  console.log("production", __prod__)
   app.use(
     session({
       name: COOKIE_NAME,
       store: MongoStore.create({ mongoUrl }),
       cookie: {
-        domain:'localhost',
+        domain: 'localhost',
         maxAge: 1000 * 60 * 60,
         httpOnly: true,
         secure: false,
-        sameSite:"lax"
+        sameSite: "lax"
       },
       secret: process.env.SESSION_SECRET_DEV_PROD as string,
       saveUninitialized: false,
@@ -95,7 +105,7 @@ const main = async () => {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {
     console.log(
-    `Server started on port ${PORT}. GraphQL server started on localhost:${PORT}${apolloServer.graphqlPath}`
+      `Server started on port ${PORT}. GraphQL server started on localhost:${PORT}${apolloServer.graphqlPath}`
     )
   });
 };

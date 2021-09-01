@@ -13,17 +13,16 @@ interface InputFieldProps {
     textarea?: boolean
 }
 
-export const InputField = ({textarea,...props}:InputFieldProps) => {
-    const [field, {error}] =useField(props)
-    console.log('field from props',field)
+export const InputField = ({ textarea, ...props }: InputFieldProps) => {
+    const [field, { error }] = useField(props)
     return (
-		<FormControl isInvalid={!!error}>
-			<FormLabel htmlFor={field.name}>{props.label}</FormLabel>
+        <FormControl isInvalid={!!error}>
+            <FormLabel htmlFor={field.name}>{props.label}</FormLabel>
             {textarea ? (
                 <Textarea {...field} id={field.name} {...props} />
-                ) : (<Input {...field} id={field.name} {...props} />) 
+            ) : (<Input {...field} id={field.name} {...props} />)
             }
-            {error && <FormErrorMessage>{error}</FormErrorMessage>}  
+            {error && <FormErrorMessage>{error}</FormErrorMessage>}
         </FormControl>
     )
 }

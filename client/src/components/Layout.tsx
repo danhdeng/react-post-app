@@ -1,9 +1,15 @@
-import React from 'react'
+import { ReactNode } from 'react'
+import { Navbar } from './Navbar'
+import { Wrapper } from './Wrapper'
 
-export const Layout = () => {
+interface ILayoutProps {
+    children: ReactNode
+}
+export const Layout = ({ children }: ILayoutProps) => {
     return (
-        <div>
-            Layout Component
-        </div>
+        <>
+            <Navbar></Navbar>
+            <Wrapper>{children}</Wrapper>
+        </>
     )
 }
