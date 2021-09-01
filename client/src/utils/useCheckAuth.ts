@@ -4,20 +4,20 @@ import { useMeQuery } from '../generated/graphql'
 
 export const useCheckAuth = () => {
     const router = useRouter()
-    const [userData, loading]=useMeQuery()
+    const {data, loading}=useMeQuery()
 
     useEffect(() => {
         if(!loading) {
-            if(userData?.me && (router.route==='/login' || router.route==='/register' || router.route==='/forgot-password' || router.route==='/change-password') 
+            if(data?.me && (router.route==='/login' || router.route==='/register' || router.route==='/forgot-password' || router.route==='/change-password') 
             ){
                 router.replace('/')
-            }else if(!userData?.me && (router.route==='/login' || router.route==='/register')
+            }else if(!data?.me && (router.route==='/login' || router.route==='/register')
             ){
                 router.replace('/login')
             }
         }
-    }, [userData, loading, router])
+    }, [data, loading, router])
     return (
-        {userData, loading}
+        {data, loading}
     )
 }
