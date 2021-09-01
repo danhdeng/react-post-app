@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@apollo/client": "^3.4.10",
-    "formik": "^2.2.9",
-    "graphql": "^15.5.2"
-  }
-}
