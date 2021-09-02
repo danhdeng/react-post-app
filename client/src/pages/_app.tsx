@@ -1,23 +1,18 @@
+import { ApolloProvider } from '@apollo/client'
 import { ChakraProvider } from '@chakra-ui/react'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import theme from '../theme'
 import { AppProps } from 'next/app'
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
-  cache: new InMemoryCache(),
-  credentials: 'include',
-  connectToDevTools: true
-})
+import { useApollo } from '../lib/apolloClient'
+import theme from '../theme'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ApolloProvider client={client}>
-      <ChakraProvider resetCSS theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </ApolloProvider>
-  )
+	const apolloClient = useApollo(pageProps)
+	return (
+		<ApolloProvider client={apolloClient}>
+			<ChakraProvider resetCSS theme={theme}>
+				<Component {...pageProps} />
+			</ChakraProvider>
+		</ApolloProvider>
+	)
 }
 
 export default MyApp

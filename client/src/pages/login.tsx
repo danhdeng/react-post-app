@@ -5,8 +5,9 @@ import React from 'react'
 import { InputField } from '../components/InputField'
 import { Layout } from '../components/Layout'
 import { Wrapper } from '../components/Wrapper'
-import { LoginInput, MeDocument, useLoginMutation } from '../generated/graphql'
+import { LoginInput, MeDocument, MeQuery, useLoginMutation } from '../generated/graphql'
 import { mapFieldErrors } from '../helpers/mapFieldErrors'
+import { initializeApollo } from '../lib/apolloClient'
 import { useCheckAuth } from '../utils/useCheckAuth'
 
 export default function Login() {
@@ -30,13 +31,10 @@ export default function Login() {
             },
             update(cache, { data }) {
                 if (data?.login.success) {
-                    console.log('DATA LOGIN', data)
-                    const meData = cache.readQuery({ query: MeDocument })
-                    console.log('MEDATA', meData)
-                    // cache.writeQuery<MeQuery>({
-                    //     query: MeDocument,
-                    //     data: { me: data.login.user }
-                    // })
+                    cache.writeQuery<MeQuery>({
+                        query: MeDocument,
+                        data: { me: data.login.user }
+                    })
 
                 }
             }
@@ -52,6 +50,8 @@ export default function Login() {
                 duration: 3000,
                 isClosable: true
             })
+			const apolloClient = initializeApollo()
+			apolloClient.resetStore()
             router.push('/')
         }
     }
