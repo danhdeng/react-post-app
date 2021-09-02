@@ -93,7 +93,7 @@ const main = async () => {
       req,
       res,
       connection,
-      dataloaders: buildDataLoaders()
+      dataLoaders: buildDataLoaders()
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });

@@ -9,7 +9,7 @@ interface VoteTypeCondition {
 
 const batchGetUsers = async (userIds: number[]) => {
     const users = await User.findByIds(userIds)
-    return userIds.map(userId => users.find(user => user.id == userId))
+    return userIds.map(userId => users.find(user => user.id === userId))
 }
 
 const batchGetVoteTypes = async (voteTypeConditions: VoteTypeCondition[]) => {
@@ -17,8 +17,8 @@ const batchGetVoteTypes = async (voteTypeConditions: VoteTypeCondition[]) => {
     return voteTypeConditions.map(voteTypeCondition =>
         voteTypes.find(
             voteType =>
-                voteType.postId == voteTypeCondition.postId &&
-                voteType.userId == voteTypeCondition.userId
+                voteType.postId === voteTypeCondition.postId &&
+                voteType.userId === voteTypeCondition.userId
         )
     )
 }
