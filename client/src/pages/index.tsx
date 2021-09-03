@@ -1,9 +1,9 @@
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+// import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { Layout } from "../components/Layout"
 import { PostsDocument, usePostsQuery } from "../generated/graphql"
 import { addApolloState, initializeApollo } from "../lib/apolloClient"
 
-export const limit = 3
+export const limit = 4
 
 const Index = () => {
   const { data, loading } = usePostsQuery({ variables: { limit } })
@@ -23,35 +23,35 @@ const Index = () => {
 }
 
 
-// export async function getStaticProps() {
-//   const apolloClient = initializeApollo()
-
-//   await apolloClient.query({
-//     query: PostsDocument,
-//     variables: {
-//       limit
-//     },
-//   })
-
-//   return addApolloState(apolloClient, {
-//     props: {},
-//   })
-// }
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const apolloClient = initializeApollo({ headers: context.req.headers })
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
 
   await apolloClient.query({
     query: PostsDocument,
     variables: {
       limit
-    }
+    },
   })
 
   return addApolloState(apolloClient, {
-    props: {}
+    props: {},
   })
 }
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const apolloClient = initializeApollo({ headers: context.req.headers })
+
+//   await apolloClient.query({
+//     query: PostsDocument,
+//     variables: {
+//       limit
+//     }
+//   })
+
+//   return addApolloState(apolloClient, {
+//     props: {}
+//   })
+// }
 
 export default Index
