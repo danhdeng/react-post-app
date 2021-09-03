@@ -43,6 +43,8 @@ export const sendEmail = async (to: string, html: string) => {
     // let testAccount = await nodemailer.createTestAccount();
     // console.log('test account: ', testAccount)
     // create reusable transporter object using the default SMTP transport
+    console.log("sendEmail start")
+
     let transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,

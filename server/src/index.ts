@@ -1,4 +1,3 @@
-import { sendEmail } from './utils/sendEmail';
 // import Mongoose  from "mongoose";
 import { ApolloServerPluginLandingPageGraphQLPlayground, Context } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
@@ -33,7 +32,7 @@ const main = async () => {
     entities: [User, Post, Upvote],
   });
 
-  await sendEmail('subarudev@gmail.com', "Hello Subaru, welcome to the test")
+  // await sendEmail('subarudev@gmail.com', "Hello Subaru, welcome to the test")
 
   const app = express();
 

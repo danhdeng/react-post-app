@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spinner, useToast } from '@chakra-ui/react'
+import { Box, Button, Flex, Link, Spinner, useToast } from '@chakra-ui/react'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -9,6 +9,7 @@ import { LoginInput, MeDocument, MeQuery, useLoginMutation } from '../generated/
 import { mapFieldErrors } from '../helpers/mapFieldErrors'
 import { initializeApollo } from '../lib/apolloClient'
 import { useCheckAuth } from '../utils/useCheckAuth'
+import NextLink from 'next/link'
 
 export default function Login() {
     const router = useRouter()
@@ -50,8 +51,8 @@ export default function Login() {
                 duration: 3000,
                 isClosable: true
             })
-			const apolloClient = initializeApollo()
-			apolloClient.resetStore()
+            const apolloClient = initializeApollo()
+            apolloClient.resetStore()
             router.push('/')
         }
     }
@@ -83,6 +84,11 @@ export default function Login() {
                                             type='password'
                                         />
                                     </Box>
+                                    <Flex mt={2}>
+                                        <NextLink href='/forgot-password'>
+                                            <Link ml='auto'>forget password</Link>
+                                        </NextLink>
+                                    </Flex>
                                     <Button
                                         type='submit'
                                         colorScheme='teal'
