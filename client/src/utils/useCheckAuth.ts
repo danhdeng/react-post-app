@@ -16,7 +16,8 @@ export const useCheckAuth = () => {
             }
             else if (!data?.me && (router.route !== '/login'
                 && router.route !== '/register'
-                && router.route !== '/forgot-password')
+                && router.route !== '/forgot-password'
+                && router.route !== '/change-password')
             ) {
                 console.log('Route: ', router.route)
                 router.replace('/login')

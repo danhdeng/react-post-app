@@ -171,7 +171,7 @@ export class UserResolver {
 
     await sendEmail(
       forgotPasswordInput.email,
-      `< href="http://${process.env.HOST}:${process.env.PORT}/change-password?token=${resetToken}&user_id=${user.id}">Click here to reset your password</a>`
+      `<a href="http://${process.env.HOST}:3000/change-password?token=${resetToken}&userId=${user.id}">Click here to reset your password</a>`
     )
     return true;
   }
