@@ -2,15 +2,15 @@ import { UserInputError } from 'apollo-server-core';
 import { Arg, Ctx, FieldResolver, ID, Int, Mutation, Query, registerEnumType, Resolver, Root, UseMiddleware } from "type-graphql";
 import { LessThan } from 'typeorm';
 import { Post } from '../entities/Post';
+import { Upvote } from '../entities/Upvote';
 import { User } from '../entities/User';
 import { checkAuth } from '../middleware/checkAuth';
 import { Context } from '../types/Context';
 import { CreatePostInput } from '../types/CreatePostInput';
+import { PaginatedPosts } from '../types/PaginatedPosts';
 import { PostMutationResponse } from '../types/PostMutationResponse';
+import { UpdatePostInput } from '../types/UpdatePostInput';
 import { VoteType } from '../types/VoteType';
-import { Upvote } from './../entities/Upvote';
-import { PaginatedPosts } from './../types/PaginatedPosts';
-import { UpdatePostInput } from './../types/UpdatePostInput';
 
 registerEnumType(VoteType, {
   name: 'VoteType'
